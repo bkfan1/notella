@@ -5,7 +5,7 @@ import { useContext } from "react";
 import { LayoutContext } from "../context/LayoutContext";
 
 export default function LoggedLayout() {
-    const {focusMode} = useContext(LayoutContext);
+    const {focusMode, darkMode} = useContext(LayoutContext);
 
     return (
     <>
@@ -21,8 +21,9 @@ export default function LoggedLayout() {
         <NotePreviewer />
       </div>
 
-      <footer className="footer text-center py-3">
+      <footer className={`footer ${darkMode ? 'text-white' : ''} text-center py-3`}>
         <p>Created by Jackson Paredes Ferranti (@bkfan1)</p>
+        <a href="https://www.github.com/bkfan1"><i className="bi bi-github"/></a>
       </footer>
     </>
   );

@@ -14,7 +14,7 @@ export default function NotePreviewer() {
     handleDeleteNoteFromTrash,
   } = useContext(NotesContext);
 
-  const {focusMode, setFocusMode} = useContext(LayoutContext);
+  const {focusMode, setFocusMode, darkMode} = useContext(LayoutContext);
 
   const [viewAsMarkdown, setViewAsMarkdown] = useState(true);
 
@@ -23,13 +23,13 @@ export default function NotePreviewer() {
       <section
         className={`notePreviewer flex flex-col w-full min-h-screen ${
           !currentEditingNote ? "justify-center items-center" : ""
-        }`}
+        } border-l border-b ${darkMode ? 'border-gray-700' : 'border-gray-300'} `}
       >
         {currentEditingNote ? (
           <>
-            <header className="notePreviewer__header flex items-center justify-between w-full h-12 px-3">
+            <header className={`notePreviewer__header flex items-center justify-between w-full h-12 px-3 border-b ${darkMode ? 'border-gray-700' : 'border-gray-300'}`}>
               <div className="flex items-center gap-2">
-                <button onClick={()=>setFocusMode(!focusMode)} className="text-gray-800" title="Toggle focus mode">
+                <button onClick={()=>setFocusMode(!focusMode)} className={`${darkMode ? 'actionBtn__dark' : ''}`} title="Toggle focus mode">
                   <i className="bi bi-window text-2xl" />
                 </button>
 
@@ -37,7 +37,8 @@ export default function NotePreviewer() {
                   type="text"
                   name="title"
                   placeholder="Title goes here..."
-                  className="px-1 outline-none border-none"
+                  className={`px-1 outline-none border-none ${darkMode ? 'text-white' : ''}`}
+                  style={{background:"none"}}
                   disabled={viewTrashedNotes ? true : false}
                   value={currentEditingNote.title}
                   onChange={(e) =>
@@ -49,7 +50,7 @@ export default function NotePreviewer() {
                 {!viewTrashedNotes ? (
                   <button
                     onClick={handleDeleteCurrentEditingNote}
-                    className="text-gray-800"
+                    className={`${darkMode ? 'actionBtn__dark' : ''}`}
                     title="Send to trash"
                   >
                     <i className={`bi bi-trash text-2xl`} />
@@ -61,14 +62,14 @@ export default function NotePreviewer() {
                         handleRemoveNoteFromTrash(currentEditingNote.id)
                       }
                       title="Remove from trash"
-                      className="text-gray-800"
+                      className={`${darkMode ? 'actionBtn__dark' : ''}`}
                     >
                       <i className="bi bi-arrow-counterclockwise text-2xl" />
                     </button>
 
                     <button
                       onClick={handleDeleteNoteFromTrash}
-                      className="text-gray-800"
+                      className={`${darkMode ? 'actionBtn__dark' : ''}`}
                       title={"Delete permanently"}
                     >
                       <i className="bi bi-x-circle-fill text-2xl" />
@@ -78,7 +79,7 @@ export default function NotePreviewer() {
 
                 <button
                   onClick={() => setViewAsMarkdown(!viewAsMarkdown)}
-                  className="text-gray-800"
+                  className={`${darkMode ? 'actionBtn__dark' : ''}`}
                   title={`${
                     viewTrashedNotes
                       ? viewAsMarkdown
@@ -108,7 +109,7 @@ export default function NotePreviewer() {
               {viewAsMarkdown ? (
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
-                  className="prose w-full h-full overflow-y-scroll prose-stone "
+                  className={`prose w-full h-full overflow-y-scroll ${darkMode ? 'prose-invert' : 'prose-stone'}`}
                 >
                   {currentEditingNote.body}
                 </ReactMarkdown>
@@ -117,7 +118,8 @@ export default function NotePreviewer() {
                   value={currentEditingNote.body}
                   disabled={viewTrashedNotes ? true : false}
                   name="body"
-                  className="noteBody__textarea"
+                  className={`noteBody__textarea ${darkMode ? 'text-white' : ''}`}
+                  style={{background:'none'}}
                   onChange={(e) =>
                     handleOnChangeCurrentEditingNote(e, currentEditingNote.id)
                   }
@@ -128,7 +130,7 @@ export default function NotePreviewer() {
           </>
         ) : (
           <>
-            <figure className="flex flex-col items-center justify-center">
+            <figure className={`flex flex-col items-center justify-center ${darkMode ? 'text-white' : ''}`}>
               <i className="bi bi-journal-bookmark-fill text-2xl" />
               <p className="text-4xl font-bold">Notella</p>
             </figure>

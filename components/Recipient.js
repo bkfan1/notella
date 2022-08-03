@@ -1,13 +1,19 @@
 import { useContext } from "react";
 import { NotesContext } from "../context/NotesContext";
+import { LayoutContext } from "../context/LayoutContext";
 import NoteInRecipient from "./NoteInRecipient";
 
 export default function Recipient() {
   const { userNotes, userTrashedNotes, viewTrashedNotes } =
     useContext(NotesContext);
+    const {darkMode} = useContext(LayoutContext);
   return (
     <>
-      <aside className="recipient">
+      <aside className={`recipient border-b ${darkMode ? 'border-gray-700' : 'border-gray-300'}`}>
+        <header className={`py-2 border-b ${darkMode ? 'border-gray-700' : 'border-gray-300'} text-center`}>
+          <h1 className={`${darkMode ? 'text-white' : ''} font-bold`}>{viewTrashedNotes ? "Trashed Notes" : "All Notes"}</h1>
+          <input type="text" placeholder="Search by title..." className={`mt-1 px-2 border ${darkMode ? 'border-gray-700 text-white' : 'border-gray-300'} rounded`} style={{background:'none'}}/>
+        </header>
         {viewTrashedNotes ? (
           <>
             {userTrashedNotes.length === 0 ? (
