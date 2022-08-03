@@ -7,23 +7,16 @@ import connection from "../database/connection";
 import Account from "../database/models/account";
 import { NotesProvider } from "../context/NotesContext";
 import Recipient from "../components/Recipient";
+import {useState} from "react";
+import LoggedLayout from "../components/LoggedLayout";
 
 export default function Home({ notes, trashedNotes }) {
+  const [focusMode, setFocusMode] = useState(false);
   return (
     <>
       <NotesProvider notes={notes} trashedNotes={trashedNotes}>
         <main>
-          <div className="flex w-full h-full">
-            <div className="flex flex-col">
-              <MainActionsMenu />
-              <Recipient notes={notes} />
-            </div>
-            <NotePreviewer />
-          </div>
-
-          <footer className="footer text-center py-3">
-            <p>Created by Jackson Paredes Ferranti (@bkfan1)</p>
-          </footer>
+          <LoggedLayout/>
         </main>
       </NotesProvider>
     </>

@@ -1,10 +1,14 @@
 import { nanoid } from "nanoid";
-import {createContext, useEffect, useReducer, useState} from "react";
+import {createContext, useEffect, useContext, useState} from "react";
+import { LayoutContext } from "./LayoutContext";
+import axios from "axios";
 
 export const NotesContext = createContext();
 
 
 export const NotesProvider = ({children, notes, trashedNotes})=>{
+
+    const {focusMode,setFocusMode} = useContext(LayoutContext);
 
     const [userNotes, setUserNotes] = useState(notes);
     const [userTrashedNotes, setUserTrashedNotes] = useState(trashedNotes);
@@ -15,9 +19,38 @@ export const NotesProvider = ({children, notes, trashedNotes})=>{
 
     useEffect(()=>{
 
+        const updateNotes = async ()=>{
+            const data = {notes: userNotes, trashedNotes: userTrashedNotes}
+            const res = await axios.post('/api/notes',data);
+
+            res.status === 200 ? console.log("notas actualizadas exitosamente") : console.log("ha ocurrido un error al intentar actualizar las notas")
+        }
+
+        const timer = setTimeout(()=>{
+            updateNotes();
+        }, 8000);
+
+
+        return ()=> clearInterval(timer);
+
+
+
+
+    }, [userNotes, userTrashedNotes])
+
+    useEffect(()=>{
+
         setCurrentEditingNote(null);
 
+
     }, [viewTrashedNotes])
+
+    useEffect(()=>{
+        if(userTrashedNotes.length === 0){
+            setViewTrashedNotes(false);
+        }
+
+    }, [userTrashedNotes])
 
     const addNewNote = ()=>{
         if(viewTrashedNotes){setViewTrashedNotes(false);}
@@ -31,8 +64,6 @@ export const NotesProvider = ({children, notes, trashedNotes})=>{
         setUserNotes([...userNotes, newNote]);
     }
 
-    
-
     const deleteNote = (id)=>{
 
         const index = userNotes.findIndex((note)=>note.id === id);
@@ -45,6 +76,7 @@ export const NotesProvider = ({children, notes, trashedNotes})=>{
 
     const handleClickNoteInRecipient = (id)=>{
         let clickedNote;
+
         if(viewTrashedNotes){
             clickedNote = userTrashedNotes.find((note)=>note.id === id);
             setCurrentEditingNote(clickedNote);
@@ -73,26 +105,33 @@ export const NotesProvider = ({children, notes, trashedNotes})=>{
     }
 
     const handleDeleteCurrentEditingNote = ()=>{
+
         const copiedCurrentEditingNote = {...currentEditingNote};
         setCurrentEditingNote(null);
+
+        if(focusMode){setFocusMode(false);}
 
         const index = userNotes.findIndex((note)=>note.id === copiedCurrentEditingNote.id);
         console.log(index);
 
         const updatedUserNotes = [...userNotes];
         const [removed] = updatedUserNotes.splice(index, 1);
-        console.log(removed)
+
         const newTrashedNotes = [...userTrashedNotes]
         newTrashedNotes.push(removed);
+
         setUserNotes(updatedUserNotes);
         setUserTrashedNotes(newTrashedNotes);
     }
 
     const handleRemoveNoteFromTrash = (id)=>{
+
         setCurrentEditingNote(null);
         const index = userTrashedNotes.findIndex((note)=>note.id === id);
+
         const newTrashedNotes = [...userTrashedNotes];
         const [removed] = newTrashedNotes.splice(index, 1);
+
         setUserTrashedNotes(newTrashedNotes);
         setUserNotes([...userNotes, removed]);
     }

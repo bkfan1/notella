@@ -65,3 +65,9 @@ main{
   left: -110px;
   bottom: -72px;
 }
+
+.recipient{
+  min-height: 800px;
+  overflow-y: scroll;
+  border-bottom: 1px solid lightgray;
+}
