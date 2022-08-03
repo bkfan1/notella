@@ -6,7 +6,6 @@
 
 body{
   min-height: 100vh;
-  background-color: white;
 }
 
 main{
@@ -14,22 +13,9 @@ main{
   min-height: 100vh;
 }
 
-.noteInRecipient, .notePreviewer__header{
-  border-bottom: 1px solid lightgray;
-}
 
 .noteInRecipient:hover{
   cursor: pointer;
-}
-
-.notePreviewer{
-  border-left:  1px solid lightgray;
-  border-bottom: 1px solid lightgray;
-}
-
-
-.mainActionsMenu, .notesRecipient{
-  border-bottom: 1px solid lightgray;
 }
 
 .formInput{
@@ -38,6 +24,12 @@ main{
   border: 1px solid #50575e17;
   outline: none;
   border-radius: 4px;
+}
+
+
+
+.actionBtn__dark{
+  color: lightgray;
 }
 
 .formInput:focus{
@@ -61,13 +53,8 @@ main{
   outline: none;
 }
 
-.dropdown__list{
-  left: -110px;
-  bottom: -72px;
-}
 
 .recipient{
   min-height: 800px;
   overflow-y: scroll;
-  border-bottom: 1px solid lightgray;
 }
