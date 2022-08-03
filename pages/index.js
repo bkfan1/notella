@@ -1,21 +1,19 @@
-import MainActionsMenu from "../components/MainActionsMenu";
-import NotePreviewer from "../components/NotePreviewer";
-import NotesRecipient from "../components/NoteInRecipient";
 import { parse } from "cookie";
 import { verify } from "jsonwebtoken";
 import connection from "../database/connection";
 import Account from "../database/models/account";
 import { NotesProvider } from "../context/NotesContext";
-import Recipient from "../components/Recipient";
-import {useState} from "react";
+import {useContext} from "react";
 import LoggedLayout from "../components/LoggedLayout";
+import {LayoutContext} from "../context/LayoutContext"
 
 export default function Home({ notes, trashedNotes }) {
-  const [focusMode, setFocusMode] = useState(false);
+  const {darkMode} = useContext(LayoutContext);
+
   return (
     <>
       <NotesProvider notes={notes} trashedNotes={trashedNotes}>
-        <main>
+        <main className={`${darkMode ? 'bg-gray-800' : 'bg-white'} ease-in-out duration-200`}>
           <LoggedLayout/>
         </main>
       </NotesProvider>
