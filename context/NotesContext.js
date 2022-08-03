@@ -1,7 +1,8 @@
-import { nanoid } from "nanoid";
 import {createContext, useEffect, useContext, useState} from "react";
 import { LayoutContext } from "./LayoutContext";
 import axios from "axios";
+import { nanoid } from "nanoid";
+
 
 export const NotesContext = createContext();
 
@@ -90,7 +91,6 @@ export const NotesProvider = ({children, notes, trashedNotes})=>{
     const handleOnChangeCurrentEditingNote = (e, id)=>{
         const {target} = e;
         const {name, value} = target;
-        //console.log(id);
 
         const index = userNotes.findIndex((note)=>note.id === id);
         let copiedNote = Object.assign({}, userNotes[index]);
@@ -112,7 +112,6 @@ export const NotesProvider = ({children, notes, trashedNotes})=>{
         if(focusMode){setFocusMode(false);}
 
         const index = userNotes.findIndex((note)=>note.id === copiedCurrentEditingNote.id);
-        console.log(index);
 
         const updatedUserNotes = [...userNotes];
         const [removed] = updatedUserNotes.splice(index, 1);
