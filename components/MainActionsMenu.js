@@ -2,10 +2,13 @@ import {useContext} from "react";
 import { NotesContext } from "../context/NotesContext";
 import { LayoutContext } from "../context/LayoutContext";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function MainActionsMenu(){
     const {userNotes, userTrashedNotes, addNewNote, viewTrashedNotes, setViewTrashedNotes} = useContext(NotesContext);
     const {darkMode, handleClickChangeDarkMode} = useContext(LayoutContext);
+
+    const router = useRouter();
     
     return(
         <>
@@ -22,7 +25,7 @@ export default function MainActionsMenu(){
                 <i className={`${darkMode ? 'bi bi-sun-fill' : 'bi bi-moon'} text-2xl`}/>
             </button>
 
-            <button className={`${darkMode ? 'actionBtn__dark' : ''}`} >
+            <button onClick={()=>router.push('/settings')} className={`${darkMode ? 'actionBtn__dark' : ''}`} >
                 <i className="bi bi-gear text-2xl"/>
             </button>
             
