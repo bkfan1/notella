@@ -9,24 +9,25 @@ export const LayoutProvider = ({ children }) => {
   useEffect(() => {
     const ls = localStorage;
     const theme = ls.getItem("darkMode");
-
+    const bool = theme === "true" ? true : false;
+    console.log(bool);
     if (theme) {
-      const bool = Boolean(theme);
-      setDarkMode(theme);
+      setDarkMode(bool);
+      return;
     }
   }, []);
 
   const handleClickChangeDarkMode = () => {
     const ls = localStorage;
     if (darkMode) {
-      setDarkMode(false);
-      ls.setItem("darkMode", "false");
+      ls.setItem("darkMode", false);
     }
 
     if (!darkMode) {
-      setDarkMode(true);
-      ls.setItem("darkMode", "true");
+      ls.setItem("darkMode", true);
     }
+
+    setDarkMode(!darkMode);
   };
 
   return (
