@@ -24,6 +24,7 @@ export default function Home({ notes, trashedNotes }) {
 export async function getServerSideProps(ctx) {
   const { cookie } = ctx.req.headers;
 
+
   if (!cookie) {
     return {
       redirect: {
