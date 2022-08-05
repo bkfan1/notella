@@ -7,6 +7,8 @@ export default function Recipient() {
   const { userNotes, userTrashedNotes, viewTrashedNotes } =
     useContext(NotesContext);
     const {darkMode} = useContext(LayoutContext);
+
+    
   return (
     <>
       <aside className={`recipient border-b ${darkMode ? 'border-gray-700' : 'border-gray-300'}`}>

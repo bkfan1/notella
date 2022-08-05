@@ -26,7 +26,7 @@ export default function LoginForm() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col w-80 ease-in-out duration-100 p-4 gap-4 border-2 bg-white"
+        className="flex flex-col w-72 ease-in-out duration-100 p-4 gap-4 border-2 rounded bg-white"
       >
         <div className="flex flex-col gap-2">
           <label className="flex flex-col">

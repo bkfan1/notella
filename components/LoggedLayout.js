@@ -13,7 +13,7 @@ export default function LoggedLayout() {
         {focusMode ? (
           ""
         ) : (
-          <div className="flex flex-col h-full">
+          <div className="someShit flex flex-col h-full">
             <MainActionsMenu />
             <Recipient />
           </div>
