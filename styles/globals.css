@@ -4,21 +4,20 @@
 
 @import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 
-body{
+body {
   min-height: 100vh;
 }
 
-main{
+main {
   width: 100%;
   min-height: 100vh;
 }
 
-
-.noteInRecipient:hover{
+.noteInRecipient:hover {
   cursor: pointer;
 }
 
-.formInput{
+.formInput {
   padding: 4px;
   background-color: rgb(235, 235, 235);
   border: 1px solid #50575e17;
@@ -26,17 +25,16 @@ main{
   border-radius: 4px;
 }
 
-
-
-.actionBtn__dark{
+.actionBtn__dark {
   color: lightgray;
 }
 
-.formInput:focus{
+.formInput:focus {
   border: 2px solid #3b82f6;
 }
 
-.loginPage, .registerPage{
+.loginPage,
+.registerPage {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -46,15 +44,14 @@ main{
   min-height: 100vh;
 }
 
-.noteBody__textarea{
+.noteBody__textarea {
   width: 100%;
   height: 100vh;
   resize: none;
   outline: none;
 }
 
-
-.recipient{
+.recipient {
   min-height: 800px;
   overflow-y: scroll;
 }
