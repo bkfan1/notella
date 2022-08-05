@@ -3,18 +3,22 @@ import { verify } from "jsonwebtoken";
 import connection from "../database/connection";
 import Account from "../database/models/account";
 import { NotesProvider } from "../context/NotesContext";
-import {useContext} from "react";
+import { useContext } from "react";
 import LoggedLayout from "../components/LoggedLayout";
-import {LayoutContext} from "../context/LayoutContext"
+import { LayoutContext } from "../context/LayoutContext";
 
 export default function Home({ notes, trashedNotes }) {
-  const {darkMode} = useContext(LayoutContext);
+  const { darkMode } = useContext(LayoutContext);
 
   return (
     <>
       <NotesProvider notes={notes} trashedNotes={trashedNotes}>
-        <main className={`${darkMode ? 'bg-gray-800' : 'bg-white'} ease-in-out duration-200`}>
-          <LoggedLayout/>
+        <main
+          className={`${
+            darkMode ? "bg-gray-800" : "bg-white"
+          } ease-in-out duration-200`}
+        >
+          <LoggedLayout />
         </main>
       </NotesProvider>
     </>
@@ -23,7 +27,6 @@ export default function Home({ notes, trashedNotes }) {
 
 export async function getServerSideProps(ctx) {
   const { cookie } = ctx.req.headers;
-
 
   if (!cookie) {
     return {
