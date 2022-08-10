@@ -1,14 +1,17 @@
-import '../styles/globals.css';
-import {LayoutProvider} from "../context/LayoutContext";
+import "../styles/globals.css";
+import { LayoutProvider } from "../context/LayoutContext";
+import { ResponseProvider } from "../context/ResponseContext";
 
 function MyApp({ Component, pageProps }) {
-  return(
+  return (
     <>
-    <LayoutProvider>
-    <Component {...pageProps} />
-    </LayoutProvider>
+      <ResponseProvider>
+        <LayoutProvider>
+          <Component {...pageProps} />
+        </LayoutProvider>
+      </ResponseProvider>
     </>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
