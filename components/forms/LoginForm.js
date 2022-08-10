@@ -17,7 +17,7 @@ export default function LoginForm() {
   const onSubmit = async (data) => {
     console.log(data);
 
-    const res = await axios.post("/api/login", data);
+    const res = await axios.post("/api/auth/login", data);
     res.status === 200
       ? router.push("/")
       : console.warn("something went wrong");
