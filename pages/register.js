@@ -13,21 +13,19 @@ export default function RegisterPage() {
   );
 }
 
-export async function getServerSideProps(ctx){
+export async function getServerSideProps(ctx) {
+  const { cookie } = ctx.req.headers;
 
-  const {cookie} = ctx.req.headers;
-
-  if(cookie){
-    return{
-      redirect:{
-        destination:'/',
-        permanent:false
-      }
-    }
+  if (cookie) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
   }
 
-
-  return{
-    props: {}
-  }
+  return {
+    props: {},
+  };
 }
