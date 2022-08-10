@@ -3,21 +3,27 @@ import Recipient from "./Recipient";
 import NotePreviewer from "./NotePreviewer";
 import { useContext } from "react";
 import { LayoutContext } from "../context/LayoutContext";
+import { NotesContext } from "../context/NotesContext";
 
 export default function LoggedLayout() {
-  const { focusMode, darkMode } = useContext(LayoutContext);
+  const { darkMode, panelIsActive, windowWidth } = useContext(LayoutContext);
 
   return (
     <>
-      <div className="flex w-full min-h-screen">
-        {focusMode ? (
-          ""
-        ) : (
-          <div className="someShit flex flex-col h-full">
-            <MainActionsMenu />
-            <Recipient />
-          </div>
-        )}
+      <div className="flex w-full h-screen">
+        <div
+          className={`lateralPanel flex flex-col h-full ${
+            windowWidth < 1024
+              ? panelIsActive
+                ? "lateralPanel__mobile"
+                : "hidden"
+              : ""
+          }`}
+        >
+          <MainActionsMenu />
+          <Recipient />
+        </div>
+
         <NotePreviewer />
       </div>
 
