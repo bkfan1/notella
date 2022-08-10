@@ -1,29 +1,78 @@
-import { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import ErrorFormFieldMessage from "../components/ErrorFormFieldMessage";
-import { email } from "../utils/regex";
+
 import { parse } from "cookie";
 import { verify } from "jsonwebtoken";
 import connection from "../database/connection";
 import Account from "../database/models/account";
-import {LayoutContext} from "../context/LayoutContext";
-import SettingsForm from "../components/forms/SettingsForm";
+import { LayoutContext } from "../context/LayoutContext";
+import UpdateAccountPasswordForm from "../components/forms/UpdateAccountPasswordForm";
+import UpdateAccountEmailForm from "../components/forms/UpdateAccountEmailForm";
 
 export default function SettingsPage({}) {
-
   const router = useRouter();
+  const { darkMode } = useContext(LayoutContext);
+  const [section, setSection] = useState("email");
 
-  const {darkMode} = useContext(LayoutContext);
+  const handleClickSection = (e) => {
+    e.preventDefault();
+    const { target } = e;
+    const { name } = target;
+    setSection(name);
+  };
+
   return (
     <>
-      <main className={`flex flex-col items-center justify-center ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <SettingsForm/>
-        
+      <main
+        className={`flex flex-col items-center justify-center ${
+          darkMode ? "bg-gray-800" : "bg-white"
+        }`}
+      >
+        <div className="flex flex-col h-fit-content p-4 rounded">
+          <header
+            className={`flex gap-4 justify-center items-center mb-2 ${
+              darkMode ? "text-white" : ""
+            } font-bold`}
+          >
+            <button
+              name="email"
+              onClick={(e) => handleClickSection(e)}
+              className={`border-b-4 ${
+                section === "email" ? "border-b-blue-500" : "border-b-gray-300"
+              }`}
+            >
+              Email
+            </button>
+
+            <button
+              name="password"
+              onClick={(e) => handleClickSection(e)}
+              className={`border-b-4 ${
+                section === "password"
+                  ? "border-b-blue-500"
+                  : "border-b-gray-300"
+              }`}
+            >
+              Password
+            </button>
+          </header>
+
+          {section === "email" ? (
+            <>
+              <UpdateAccountEmailForm />
+            </>
+          ) : (
+            <UpdateAccountPasswordForm />
+          )}
+        </div>
 
         <Link href="/">
-          <a className={`ease-in-out duration-200 mt-4 p-2 text-xl font-bold ${darkMode ? 'text-white' : 'text-blue-500'}`}>
+          <a
+            className={`ease-in-out duration-200 mt-4 p-2 text-xl font-bold ${
+              darkMode ? "text-white" : "text-blue-500"
+            }`}
+          >
             <i className="bi bi-arrow-left mr-2" />
             Back to notes
           </a>
@@ -62,8 +111,6 @@ export async function getServerSideProps(ctx) {
   }
 
   return {
-    props: {
-      email: user.email,
-    },
+    props: {},
   };
 }
