@@ -51,7 +51,7 @@ main {
   outline: none;
 }
 
-.recipient {
-  min-height: 800px;
-  overflow-y: scroll;
+.lateralPanel__mobile{
+  position: fixed;
+  width: 100%;
 }
