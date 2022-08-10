@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { NotesContext } from "../context/NotesContext";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -15,7 +15,7 @@ export default function NotePreviewer() {
     handleDeleteNoteFromTrash,
   } = useContext(NotesContext);
 
-  const { focusMode, setFocusMode, darkMode } = useContext(LayoutContext);
+  const {windowWidth, darkMode, panelIsActive, setPanelIsActive } = useContext(LayoutContext);
 
   const [viewAsMarkdown, setViewAsMarkdown] = useState(true);
 
@@ -24,7 +24,7 @@ export default function NotePreviewer() {
   return (
     <>
       <section
-        className={`notePreviewer flex flex-col w-full min-h-screen ${
+        className={`notePreviewer flex flex-col w-full h-full ${
           !currentEditingNote ? "justify-center items-center" : ""
         } border-l border-b ${
           darkMode ? "border-gray-700" : "border-gray-300"
@@ -33,18 +33,14 @@ export default function NotePreviewer() {
         {currentEditingNote ? (
           <>
             <header
-              className={`notePreviewer__header flex items-center justify-between w-full h-12 px-3 border-b ${
-                darkMode ? "border-gray-700" : "border-gray-300"
+              className={`notePreviewer__header flex items-center justify-between w-full h-12 px-3 py-2 border-b ${
+                darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"
               }`}
             >
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setFocusMode(!focusMode)}
-                  className={`${btnTheme}`}
-                  title="Toggle focus mode"
-                >
-                  <i className="bi bi-window text-2xl" />
-                </button>
+              <div className="flex items-center gap-4">
+                {windowWidth < 1024 ? <button onClick={()=>setPanelIsActive(!panelIsActive)} className={`${btnTheme}`} title={'Toggle hide aside  menus'}>
+                  <i className="bi bi-list text-2xl"/>
+                </button> : ''}
 
                 <input
                   type="text"
@@ -120,11 +116,11 @@ export default function NotePreviewer() {
               </menu>
             </header>
 
-            <div className="w-full h-full p-4">
+            <div className="w-full h-full p-4 overflow-y-scroll">
               {viewAsMarkdown ? (
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
-                  className={`prose w-full h-full overflow-y-scroll ${
+                  className={`prose w-full h-full   ${
                     darkMode ? "prose-invert" : "prose-stone"
                   }`}
                 >
@@ -149,7 +145,7 @@ export default function NotePreviewer() {
           </>
         ) : (
           <>
-            <NotellaEmblem/>
+            <NotellaEmblem />
           </>
         )}
       </section>
