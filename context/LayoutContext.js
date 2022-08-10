@@ -3,14 +3,34 @@ import { useState, createContext, useEffect } from "react";
 export const LayoutContext = createContext();
 
 export const LayoutProvider = ({ children }) => {
-  const [focusMode, setFocusMode] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+
+  const [panelIsActive, setPanelIsActive] = useState(true);
+  const [windowWidth, setWindowWith] = useState(0);
+
+  useEffect(() => {
+    const updateWindowWidth = () => {
+      const w = window.innerWidth;
+      setWindowWith(w);
+    };
+
+    updateWindowWidth();
+    window.addEventListener("resize", updateWindowWidth);
+
+    return () => window.removeEventListener("resize", updateWindowWidth);
+  });
+
+  useEffect(() => {
+    if (windowWidth > 1024) {
+      setPanelIsActive(true);
+    }
+
+  }, [windowWidth]);
 
   useEffect(() => {
     const ls = localStorage;
     const theme = ls.getItem("darkMode");
     const bool = theme === "true" ? true : false;
-    console.log(bool);
     if (theme) {
       setDarkMode(bool);
       return;
@@ -34,11 +54,12 @@ export const LayoutProvider = ({ children }) => {
     <>
       <LayoutContext.Provider
         value={{
-          focusMode,
-          setFocusMode,
           darkMode,
           setDarkMode,
           handleClickChangeDarkMode,
+          panelIsActive,
+          setPanelIsActive,
+          windowWidth,
         }}
       >
         {children}
