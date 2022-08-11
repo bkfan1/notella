@@ -11,7 +11,7 @@ export const getAccountNotes = async (req, res, userId) => {
       .status(200)
       .json({ notes: user.notes, trashedNotes: user.trashedNotes });
   }
-  return res.status(404).json({});
+  return res.status(404).json({message:'User not found.'});
 };
 
 export const updateAccountNotes = async (req, res, userId) => {
@@ -32,7 +32,7 @@ export const changeAccountPassword = async (req, res, userId) => {
   }
 
   if (body.confirmNewPassword !== body.newPassword) {
-    return res.status(403).json({message:'Passwords dont match.'});
+    return res.status(403).json({message:'Confirm new password dont match with new password.'});
   }
 
   const db = await connection();
@@ -43,7 +43,7 @@ export const changeAccountPassword = async (req, res, userId) => {
       return res.status(500).json({message:'Server error, please try again.'});
     }
     if (!result) {
-      return res.status(403).json({message:'Passwords dont match.'});
+      return res.status(403).json({message:'Current password dont match.'});
     }
 
     hash(body.newPassword, 10, async (err, hashedNewPassword) => {
@@ -70,8 +70,12 @@ export const changeAccountEmail = async (req, res, userId) => {
     return res.status(403).json({message:'Confirm email dont match with new email.'});
   }
 
-  if (!email.test(body.newEmail) || !email.test(body.confirmNewEmail)) {
-    return res.status(404).json({message:'Invalid credentials'});
+  if (!email.test(body.newEmail)) {
+    return res.status(404).json({message:'Invalid new email.'});
+  }
+
+  if(!email.test(body.confirmNewEmail)){
+    return res.status(404).json({message:'Invalid confirm new email.'})
   }
 
   const db = await connection();

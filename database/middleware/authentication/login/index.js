@@ -14,16 +14,18 @@ export const handleLogin = async (req, res) => {
       .json({ message: "You need to provide an email and password." });
   }
 
-  if (!email.test(body.email) || body.password.length < 8) {
-    return res.status(400).json({ message: "Invalid email or password." });
+  if (!email.test(body.email)) {
+    return res.status(400).json({ message: "Invalid email."});
   }
+
+  if(body.password.length < 8){return res.status(400).json({message:'Password needs to be at least 8 characters long.'})}
 
   const db = await connection();
   const user = await Account.findOne({ email: body.email });
   if (!user) {
     return res
       .status(404)
-      .json({ message: "Account with that email does not exists." });
+      .json({ message: "Account with that email dont exists." });
   }
 
   compare(body.password, user.password, async (err, result) => {
@@ -43,7 +45,7 @@ export const handleLogin = async (req, res) => {
         serialize("authToken", jwt, {
           httpOnly: true,
           secure: process.env.NODE_ENV !== "development",
-          sameSite: "strict",
+          sameSite: process.env.NODE_ENV === "development" ? 'strict' : 'lax',
           maxAge: 86400,
           path: "/",
         })
@@ -52,6 +54,6 @@ export const handleLogin = async (req, res) => {
       return res.status(200).json({ message: "Logged sucessfully." });
     }
 
-    return res.status(400).json({ message: "Bad request" });
+    return res.status(400).json({ message: "Wrong password." });
   });
 };

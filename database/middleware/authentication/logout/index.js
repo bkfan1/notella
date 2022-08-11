@@ -5,7 +5,7 @@ export const handleLogout = async (req, res) => {
   const serialized = serialize("authToken", null, {
     httpOnly: true,
     secure: process.env.NODE_ENV !== "development",
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV === "development" ? 'strict' : 'lax',
     maxAge: 0,
     path: "/",
   });
