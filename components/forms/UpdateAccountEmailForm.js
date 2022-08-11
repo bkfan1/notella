@@ -1,24 +1,35 @@
-import axios from "axios";
-import { useRouter } from "next/router";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { ResponseContext } from "../../context/ResponseContext";
+
+import axios from "axios";
 import { email } from "../../utils/regex";
+
 import ErrorFormFieldMessage from "../ErrorFormFieldMessage";
 
-export default function UpdateAccountEmailForm() {
 
+export default function UpdateAccountEmailForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const router = useRouter();
+  const {setCode, setMessage, extractCode, extractMessage} = useContext(ResponseContext); 
 
   const onSubmit = async (data) => {
-
-    const res = await axios.put('/api/account/email', data);
-
+    try {
+      const res = await axios.put("/api/account/email", data);
+      setCode(res.status);
+      setMessage(res.data.message);
+      
+    } catch (error) {
+      const {response} = error;
+      const code = extractCode(response);
+      const message = extractMessage(response);
+      setCode(code);
+      setMessage(message);
+    }
   };
 
   return (
@@ -30,10 +41,13 @@ export default function UpdateAccountEmailForm() {
               type="email"
               placeholder="New email"
               className="formInput"
-              {...register("newEmail", { required: true, pattern: email })}
+              {...register("newEmail", {
+                required: { value: true, message: "This field is required." },
+                pattern: { value: email, message: "Type a valid email." },
+              })}
             />
             {errors.newEmail && (
-              <ErrorFormFieldMessage message={"Type a valid email address"} />
+              <ErrorFormFieldMessage message={errors.newEmail.message} />
             )}
           </label>
 
@@ -43,12 +57,12 @@ export default function UpdateAccountEmailForm() {
               placeholder="Confirm new email"
               className="formInput"
               {...register("confirmNewEmail", {
-                required: true,
-                pattern: email,
+                required: { value: true, message: "This field is required." },
+                pattern: { value: email, message: "Type a valid email." },
               })}
             />
             {errors.confirmNewEmail && (
-              <ErrorFormFieldMessage message={"Type a valid email address"} />
+              <ErrorFormFieldMessage message={errors.confirmNewEmail.message} />
             )}
           </label>
 

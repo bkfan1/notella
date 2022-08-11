@@ -1,9 +1,11 @@
-import Link from "next/link";
+import { useContext} from "react";
 import { useForm } from "react-hook-form";
+import { ResponseContext } from "../../context/ResponseContext";
+
+import Link from "next/link";
+import axios from "axios";
 import { email } from "../../utils/regex";
 import ErrorFormFieldMessage from "../ErrorFormFieldMessage";
-import axios from "axios";
-import { useRouter } from "next/router";
 
 export default function RegisterForm() {
   const {
@@ -12,14 +14,25 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm();
 
-  const router = useRouter();
+  const {setCode, setMessage, extractCode, extractMessage} = useContext(ResponseContext);
 
   const onSubmit = async (data) => {
-    console.log(data);
-    const res = await axios.post("/api/register", data);
-    res.status === 200
-      ? router.push("/login")
-      : console.warn("something went wrong");
+    try {
+      const res = await axios.post("/api/register", data);
+
+      setCode(res.status);
+      setMessage(res.data.message);
+      
+    } catch (error) {
+      const {response} = error;
+      const status = extractCode(response)
+      const message = extractMessage(response);
+
+      setCode(status)
+      setMessage(message);
+    
+    }
+
   };
 
   return (
@@ -34,10 +47,10 @@ export default function RegisterForm() {
               type="email"
               placeholder="user@user.com"
               className="formInput"
-              {...register("email", { required: true, pattern: email })}
+              {...register("email", { required: {value:true, message:'This field is required.'}, pattern: {value:email, message:'Type a valid email.'} })}
             />
             {errors.email && (
-              <ErrorFormFieldMessage message={"Type a valid email address"} />
+              <ErrorFormFieldMessage message={errors.email.message} />
             )}
           </label>
           <label className="flex flex-col">
@@ -45,11 +58,11 @@ export default function RegisterForm() {
               type="password"
               placeholder="Password"
               className="formInput"
-              {...register("password", { required: true, minLength: 8 })}
+              {...register("password", { required: {value:true, message:'This field is required.'}, minLength: {value:8, message:'Password needs to be at least 8 characters long.'} })}
             />
             {errors.password && (
               <ErrorFormFieldMessage
-                message={"Password must be 8 characters long"}
+                message={errors.password.message}
               />
             )}
           </label>
@@ -63,6 +76,8 @@ export default function RegisterForm() {
             <a className="text-sm text-sky-700">Log In</a>
           </Link>
         </menu>
+
+        
       </form>
     </>
   );

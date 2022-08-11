@@ -1,9 +1,13 @@
-import axios from "axios";
-import Link from "next/link";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { ResponseContext } from "../../context/ResponseContext";
+
+
+import Link from "next/link";
+import axios from "axios";
 import { email } from "../../utils/regex";
 import ErrorFormFieldMessage from "../ErrorFormFieldMessage";
-import { useRouter } from "next/router";
 
 export default function LoginForm() {
   const {
@@ -12,15 +16,32 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm();
 
+  const { setCode, setMessage, extractCode, extractMessage} = useContext(ResponseContext);
+
   const router = useRouter();
 
   const onSubmit = async (data) => {
-    console.log(data);
 
-    const res = await axios.post("/api/auth/login", data);
-    res.status === 200
-      ? router.push("/")
-      : console.warn("something went wrong");
+    try {
+      const res = await axios.post("/api/auth/login", data);
+
+      setCode(res.status);
+      setMessage(res.data.message);
+
+      setTimeout(()=>{
+        router.push('/');
+      }, 1000);
+      
+    } catch (error) {
+      const {response} = error;
+      const status = extractCode(response)
+      const message = extractMessage(response);
+
+      setCode(status)
+      setMessage(message);
+    
+    }
+
   };
   return (
     <>
@@ -34,10 +55,10 @@ export default function LoginForm() {
               type="email"
               placeholder="user@user.com"
               className="formInput"
-              {...register("email", { required: true, pattern: email })}
+              {...register("email", { required: {value:true, message:'This field is required.'}, pattern: {value:email, message:'Type a valid email.'} })}
             />
             {errors.email && (
-              <ErrorFormFieldMessage message={"Type a valid email address"} />
+              <ErrorFormFieldMessage message={errors.email.message} />
             )}
           </label>
           <label className="flex flex-col">
@@ -45,11 +66,11 @@ export default function LoginForm() {
               type="password"
               placeholder="Password"
               className="formInput"
-              {...register("password", { required: true, minLength: 8 })}
+              {...register("password", { required: {value:true, message:'This field is required'}, minLength: {value:8, message:'Password needs to be at least 8 characters long.'} })}
             />
             {errors.password && (
               <ErrorFormFieldMessage
-                message={"Password must be 8 characters long"}
+                message={errors.password.message}
               />
             )}
           </label>

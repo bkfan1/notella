@@ -1,5 +1,7 @@
-import { useRouter } from "next/router";
+import {useContext} from "react";
 import { useForm } from "react-hook-form";
+import { ResponseContext } from "../../context/ResponseContext";
+
 import axios from "axios";
 import ErrorFormFieldMessage from "../ErrorFormFieldMessage";
 
@@ -10,13 +12,21 @@ export default function UpdateAccountPasswordForm() {
     formState: { errors },
   } = useForm();
 
-  const router = useRouter();
+  const {setCode, setMessage, extractCode, extractMessage} = useContext(ResponseContext); 
 
   const onSubmit = async (data) => {
-
-    const res = await axios.put('/api/account/password', data);
-
-    res.status === 200 ? console.log("contraseña actualizada con exito") : console.log("wrong!")
+    try {
+      const res = await axios.put("/api/account/password", data);
+      setCode(res.status);
+      setMessage(res.data.message);
+      
+    } catch (error) {
+      const {response} = error;
+      const code = extractCode(response);
+      const message = extractMessage(response);
+      setCode(code);
+      setMessage(message);
+    }
   };
 
   return (
@@ -26,12 +36,12 @@ export default function UpdateAccountPasswordForm() {
           <label className="flex flex-col">
             <input
               type="password"
-              placeholder="Old password"
+              placeholder="Current password"
               className="formInput"
-              {...register("oldPassword", { required: true, minLength: 8 })}
+              {...register("oldPassword", { required: {value:true, message:'This field is required.'}, minLength: {value:8, message:'Password needs to be at least 8 characters long.'} })}
             />
             {errors.oldPassword && (
-              <ErrorFormFieldMessage message={"Password must be at least 8 characters long."} />
+              <ErrorFormFieldMessage message={errors.oldPassword.message} />
             )}
           </label>
 
@@ -40,10 +50,10 @@ export default function UpdateAccountPasswordForm() {
               type="password"
               placeholder="New password"
               className="formInput"
-              {...register("newPassword", { required: true, minLength: 8 })}
+              {...register("newPassword", { required: {value:true, message:'This field is required.'}, minLength: {value:8, message:'Password needs to be at least 8 characters long.'} })}
             />
             {errors.newPassword && (
-              <ErrorFormFieldMessage message={"New password must be at least 8 characters long."} />
+              <ErrorFormFieldMessage message={errors.newPassword.message} />
             )}
           </label>
 
@@ -53,12 +63,12 @@ export default function UpdateAccountPasswordForm() {
               placeholder="Confirm new password"
               className="formInput"
               {...register("confirmNewPassword", {
-                required: true,
-                minLength: 8,
+                required: {value:true, message:'This field is required.'},
+                minLength: {value:8, message:'Password needs to be at least 8 characters long.'},
               })}
             />
             {errors.confirmNewPassword && (
-              <ErrorFormFieldMessage message={"Confirm new password must be at least 8 characters long and needs to match new password."} />
+              <ErrorFormFieldMessage message={errors.confirmNewPassword.message} />
             )}
           </label>
 
