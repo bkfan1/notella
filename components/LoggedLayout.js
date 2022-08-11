@@ -1,9 +1,9 @@
+import { useContext } from "react";
+import { LayoutContext } from "../context/LayoutContext";
+
 import MainActionsMenu from "./MainActionsMenu";
 import Recipient from "./Recipient";
 import NotePreviewer from "./NotePreviewer";
-import { useContext } from "react";
-import { LayoutContext } from "../context/LayoutContext";
-import { NotesContext } from "../context/NotesContext";
 
 export default function LoggedLayout() {
   const { darkMode, panelIsActive, windowWidth } = useContext(LayoutContext);

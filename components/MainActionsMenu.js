@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { NotesContext } from "../context/NotesContext";
 import { LayoutContext } from "../context/LayoutContext";
-import axios from "axios";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 export default function MainActionsMenu() {
   const { addNewNote, viewTrashedNotes, setViewTrashedNotes} =
@@ -17,10 +17,16 @@ export default function MainActionsMenu() {
   const btnTheme = darkMode ? "actionBtn__dark" : "";
 
   const logout = async () => {
-    const res = await axios.delete("/api/auth/logout");
-    res.status === 200
-      ? router.push("/login")
-      : console.warn("something went wrong");
+
+    try {
+      const res = await axios.delete("/api/auth/logout");
+      router.push('/login');
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+
   };
 
   return (

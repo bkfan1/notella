@@ -2,7 +2,7 @@ export default function ResponseStatusBox({ code, message }) {
   return (
     <>
       <figure
-        className={`${
+        className={`flex items-center justify-center p-2 ${
           code === 200
             ? "bg-green-600"
             : code >= 400
@@ -10,12 +10,8 @@ export default function ResponseStatusBox({ code, message }) {
             : "bg-yellow-400"
         }`}
       >
-        <i
-          className={`bi ${
-            code === 200 ? "bi-check-circle" : "bi-exclamation-triangle"
-          } text-white`}
-        />
-        <p className="text-white">{message}</p>
+        
+        <p className="text-sm text-center text-white">{message}</p>
       </figure>
     </>
   );

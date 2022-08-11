@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
 import { NotesContext } from "../context/NotesContext";
+import { LayoutContext } from "../context/LayoutContext";
+
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { LayoutContext } from "../context/LayoutContext";
 import NotellaEmblem from "./NotellaEmblem";
 
 export default function NotePreviewer() {
