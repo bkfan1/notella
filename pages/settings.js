@@ -7,10 +7,14 @@ import { verify } from "jsonwebtoken";
 import connection from "../database/connection";
 import Account from "../database/models/account";
 import { LayoutContext } from "../context/LayoutContext";
+import { ResponseContext } from "../context/ResponseContext";
+
 import UpdateAccountPasswordForm from "../components/forms/UpdateAccountPasswordForm";
 import UpdateAccountEmailForm from "../components/forms/UpdateAccountEmailForm";
+import ResponseStatusBox from "../components/ResponseStatusBox";
 
 export default function SettingsPage({}) {
+  const {code, message} = useContext(ResponseContext);
   const router = useRouter();
   const { darkMode } = useContext(LayoutContext);
   const [section, setSection] = useState("email");
@@ -66,6 +70,8 @@ export default function SettingsPage({}) {
             <UpdateAccountPasswordForm />
           )}
         </div>
+
+        {code && message ? <ResponseStatusBox code={code} message={message}/> : ''}
 
         <Link href="/">
           <a
