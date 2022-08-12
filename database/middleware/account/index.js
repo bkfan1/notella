@@ -28,11 +28,11 @@ export const updateAccountNotes = async (req, res, userId) => {
 export const changeAccountPassword = async (req, res, userId) => {
   const { body } = req;
   if (!body.oldPassword || !body.newPassword || !body.confirmNewPassword) {
-    return res.status(403).json({message:'Invalid credentials.'});
+    return res.status(400).json({message:'Invalid credentials.'});
   }
 
   if (body.confirmNewPassword !== body.newPassword) {
-    return res.status(403).json({message:'Confirm new password dont match with new password.'});
+    return res.status(400).json({message:'Confirm new password dont match with new password.'});
   }
 
   const db = await connection();
@@ -43,7 +43,7 @@ export const changeAccountPassword = async (req, res, userId) => {
       return res.status(500).json({message:'Server error, please try again.'});
     }
     if (!result) {
-      return res.status(403).json({message:'Current password dont match.'});
+      return res.status(400).json({message:'Current password dont match.'});
     }
 
     hash(body.newPassword, 10, async (err, hashedNewPassword) => {
@@ -63,26 +63,26 @@ export const changeAccountEmail = async (req, res, userId) => {
   const { body } = req;
 
   if (!body.newEmail || !body.confirmNewEmail) {
-    return res.status(403).json({message:'Invalid credentials.'});
+    return res.status(400).json({message:'Invalid credentials.'});
   }
 
   if (body.newEmail !== body.confirmNewEmail) {
-    return res.status(403).json({message:'Confirm email dont match with new email.'});
+    return res.status(400).json({message:'Confirm email dont match with new email.'});
   }
 
   if (!email.test(body.newEmail)) {
-    return res.status(404).json({message:'Invalid new email.'});
+    return res.status(400).json({message:'Invalid new email.'});
   }
 
   if(!email.test(body.confirmNewEmail)){
-    return res.status(404).json({message:'Invalid confirm new email.'})
+    return res.status(400).json({message:'Invalid confirm new email.'})
   }
 
   const db = await connection();
   const accountWithEmail = await Account.findOne({ email: body.newEmail });
 
   if (accountWithEmail) {
-    return res.status(403).json({message:'Already exists an account with that email.'});
+    return res.status(400).json({message:'Already exists an account with that email.'});
   }
 
   const filter = { _id: userId };
