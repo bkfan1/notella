@@ -17,6 +17,28 @@ main {
   cursor: pointer;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+.recipient::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.recipient {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.notePreviewer__bodyContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.notePreviewer__bodyContainer {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .formInput {
   padding: 4px;
   background-color: rgb(235, 235, 235);
@@ -51,7 +73,9 @@ main {
   outline: none;
 }
 
-.lateralPanel__mobile{
-  position: fixed;
-  width: 100%;
+@media screen and (max-width: 1024px) {
+  .panel {
+    position: fixed;
+    width: 100%;
+  }
 }
