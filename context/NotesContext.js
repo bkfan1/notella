@@ -6,7 +6,13 @@ import { nanoid } from "nanoid";
 export const NotesContext = createContext();
 
 export const NotesProvider = ({ children, notes, trashedNotes }) => {
-  const { focusMode, setFocusMode, panelIsActive, setPanelIsActive, windowWidth } = useContext(LayoutContext);
+  const {
+    focusMode,
+    setFocusMode,
+    panelIsActive,
+    setPanelIsActive,
+    windowWidth,
+  } = useContext(LayoutContext);
 
   const [userNotes, setUserNotes] = useState(notes);
   const [userTrashedNotes, setUserTrashedNotes] = useState(trashedNotes);
@@ -16,6 +22,7 @@ export const NotesProvider = ({ children, notes, trashedNotes }) => {
 
   const [currentEditingNote, setCurrentEditingNote] = useState(null);
   const [viewTrashedNotes, setViewTrashedNotes] = useState(false);
+  const [updatedNotes, setUpdatedNotes] = useState(false);
 
   useEffect(() => {
     const filterNotesBySearchTerm = () => {
@@ -23,10 +30,9 @@ export const NotesProvider = ({ children, notes, trashedNotes }) => {
         if (viewTrashedNotes) {
           setFilteredNotes(userTrashedNotes);
           return;
-        } else {
-          setFilteredNotes(userNotes);
-          return;
         }
+        setFilteredNotes(userNotes);
+        return;
       }
 
       let results;
@@ -45,22 +51,29 @@ export const NotesProvider = ({ children, notes, trashedNotes }) => {
     };
 
     filterNotesBySearchTerm();
-
   }, [searchValue, viewTrashedNotes, userNotes, userTrashedNotes]);
 
   useEffect(() => {
     const updateNotes = async () => {
       const data = { notes: userNotes, trashedNotes: userTrashedNotes };
-      const res = await axios.put("/api/account/notes", data);
+      try {
+        const res = await axios.put("/api/account/notes", data);
+        setUpdatedNotes(true);
 
-      res.status === 200
-        ? console.log("notas actualizadas exitosamente")
-        : console.log("ha ocurrido un error al intentar actualizar las notas");
+        setTimeout(()=>{
+          setUpdatedNotes(false);
+        }, 2500);
+        
+      } catch (error) {
+        console.log(error)
+        
+      }
+
     };
 
     const timer = setTimeout(() => {
       updateNotes();
-    }, 8000);
+    }, 1000);
 
     return () => clearInterval(timer);
   }, [userNotes, userTrashedNotes]);
@@ -93,15 +106,12 @@ export const NotesProvider = ({ children, notes, trashedNotes }) => {
   };
 
   const handleClickNoteInRecipient = (id) => {
-    
     let clickedNote;
-
-    if(windowWidth < 1024){
-      if(panelIsActive){
+    if (windowWidth < 1024) {
+      if (panelIsActive) {
         setPanelIsActive(false);
       }
     }
-
 
     if (viewTrashedNotes) {
       clickedNote = userTrashedNotes.find((note) => note.id === id);
@@ -110,9 +120,6 @@ export const NotesProvider = ({ children, notes, trashedNotes }) => {
     }
 
     setCurrentEditingNote(clickedNote);
-
-    
-    
   };
 
   const handleOnChangeCurrentEditingNote = (e, id) => {
@@ -193,6 +200,7 @@ export const NotesProvider = ({ children, notes, trashedNotes }) => {
           searchValue,
           setSearchValue,
           filteredNotes,
+          updatedNotes
         }}
       >
         {children}
