@@ -5,10 +5,17 @@ import { useRouter } from "next/router";
 import axios from "axios";
 
 export default function MainActionsMenu() {
-  const { addNewNote, viewTrashedNotes, setViewTrashedNotes} =
-    useContext(NotesContext);
+  const {
+    addNewNote,
+    viewTrashedNotes,
+    setViewTrashedNotes,
+    currentEditingNote,
+  } = useContext(NotesContext);
   const {
     darkMode,
+    panelIsActive,
+    setPanelIsActive,
+    windowWidth,
     handleClickChangeDarkMode,
   } = useContext(LayoutContext);
 
@@ -17,16 +24,12 @@ export default function MainActionsMenu() {
   const btnTheme = darkMode ? "actionBtn__dark" : "";
 
   const logout = async () => {
-
     try {
       const res = await axios.delete("/api/auth/logout");
-      router.push('/login');
-      
+      router.push("/login");
     } catch (error) {
       console.log(error);
-      
     }
-
   };
 
   return (
@@ -77,11 +80,22 @@ export default function MainActionsMenu() {
         <button
           onClick={() => router.push("/settings")}
           className={`${btnTheme}`}
-          title={'Settings'}
+          title={"Settings"}
         >
           <i className="bi bi-gear text-2xl" />
         </button>
 
+        {windowWidth < 1024 && currentEditingNote ? (
+          <button
+            onClick={() => setPanelIsActive(!panelIsActive)}
+            className={`${btnTheme}`}
+            title="Toggle Panel"
+          >
+            <i className="bi bi-list text-2xl" />
+          </button>
+        ) : (
+          ""
+        )}
       </menu>
     </>
   );

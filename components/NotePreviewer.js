@@ -16,7 +16,8 @@ export default function NotePreviewer() {
     handleDeleteNoteFromTrash,
   } = useContext(NotesContext);
 
-  const {windowWidth, darkMode, panelIsActive, setPanelIsActive } = useContext(LayoutContext);
+  const { windowWidth, darkMode, panelIsActive, setPanelIsActive } =
+    useContext(LayoutContext);
 
   const [viewAsMarkdown, setViewAsMarkdown] = useState(true);
 
@@ -35,13 +36,22 @@ export default function NotePreviewer() {
           <>
             <header
               className={`notePreviewer__header flex items-center justify-between w-full h-12 px-3 py-2 border-b ${
-                darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-300"
+                darkMode
+                  ? "bg-gray-800 border-gray-700"
+                  : "bg-white border-gray-300"
               }`}
             >
               <div className="flex items-center gap-4">
-                {windowWidth < 1024 ? <button onClick={()=>setPanelIsActive(!panelIsActive)} className={`${btnTheme}`} title={'Toggle hide aside  menus'}>
-                  <i className="bi bi-list text-2xl"/>
-                </button> : ''}
+                {windowWidth < 1024 ? (
+                  <button
+                    onClick={() => setPanelIsActive(!panelIsActive)}
+                    className={`${btnTheme}`}
+                  >
+                    <i className="bi bi-list text-2xl" />
+                  </button>
+                ) : (
+                  ""
+                )}
 
                 <input
                   type="text"
@@ -117,7 +127,7 @@ export default function NotePreviewer() {
               </menu>
             </header>
 
-            <div className="w-full h-full p-4 overflow-y-scroll">
+            <div className="notePreviewer__bodyContainer w-full h-full p-4 overflow-y-scroll">
               {viewAsMarkdown ? (
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
