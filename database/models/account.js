@@ -1,13 +1,15 @@
-import {Schema, model, models} from "mongoose";
+import { Schema, model, models } from "mongoose";
 
-const accountSchema = new Schema({
-    email:{type:String, required:true, unique:true},
-    password: {type:String, required: true},
-    createdAt: {type:String},
+const accountSchema = new Schema(
+  {
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    createdAt: { type: String },
 
-    notes: {type:Array},
-    trashedNotes: {type:Array}
+    notes: { type: Array },
+    trashedNotes: { type: Array },
+  },
+  { collection: "accounts" }
+);
 
-}, {collection:'accounts'});
-
-export default models.Account || model('Account', accountSchema);
+export default models.Account || model("Account", accountSchema);
