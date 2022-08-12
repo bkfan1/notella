@@ -1,6 +1,7 @@
-import { useContext} from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { ResponseContext } from "../../context/ResponseContext";
+import { LayoutContext } from "../../context/LayoutContext";
 
 import Link from "next/link";
 import axios from "axios";
@@ -14,7 +15,10 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm();
 
-  const {setCode, setMessage, extractCode, extractMessage} = useContext(ResponseContext);
+  const { setCode, setMessage, extractCode, extractMessage } =
+    useContext(ResponseContext);
+
+  const { darkMode } = useContext(LayoutContext);
 
   const onSubmit = async (data) => {
     try {
@@ -22,32 +26,32 @@ export default function RegisterForm() {
 
       setCode(res.status);
       setMessage(res.data.message);
-      
     } catch (error) {
-      const {response} = error;
-      const status = extractCode(response)
+      const { response } = error;
+      const status = extractCode(response);
       const message = extractMessage(response);
 
-      setCode(status)
+      setCode(status);
       setMessage(message);
-    
     }
-
   };
 
   return (
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col w-72 ease-in-out duration-100 p-4 gap-4 border-2 rounded bg-white"
+        className="flex flex-col w-72 ease-in-out duration-100 p-4 gap-4"
       >
         <div className="flex flex-col gap-2">
           <label className="flex flex-col">
             <input
               type="email"
-              placeholder="user@user.com"
+              placeholder="Email"
               className="formInput"
-              {...register("email", { required: {value:true, message:'This field is required.'}, pattern: {value:email, message:'Type a valid email.'} })}
+              {...register("email", {
+                required: { value: true, message: "This field is required." },
+                pattern: { value: email, message: "Type a valid email." },
+              })}
             />
             {errors.email && (
               <ErrorFormFieldMessage message={errors.email.message} />
@@ -58,12 +62,16 @@ export default function RegisterForm() {
               type="password"
               placeholder="Password"
               className="formInput"
-              {...register("password", { required: {value:true, message:'This field is required.'}, minLength: {value:8, message:'Password needs to be at least 8 characters long.'} })}
+              {...register("password", {
+                required: { value: true, message: "This field is required." },
+                minLength: {
+                  value: 8,
+                  message: "Password needs to be at least 8 characters long.",
+                },
+              })}
             />
             {errors.password && (
-              <ErrorFormFieldMessage
-                message={errors.password.message}
-              />
+              <ErrorFormFieldMessage message={errors.password.message} />
             )}
           </label>
         </div>
@@ -73,11 +81,13 @@ export default function RegisterForm() {
             Register
           </button>
           <Link href="/login">
-            <a className="text-sm text-sky-700">Log In</a>
+            <a
+              className={`text-sm ${darkMode ? "text-white" : "text-sky-700"}`}
+            >
+              Log In
+            </a>
           </Link>
         </menu>
-
-        
       </form>
     </>
   );
