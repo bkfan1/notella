@@ -6,7 +6,7 @@ export const createToken = (claims, secret, options) => {
     throw Error("No claims were provided.");
   }
   if (!secret) {
-    throw "No secret were provided.";
+    throw Error("No secret were provided.");
   }
 
   const jwt = sign(claims, secret, options);
