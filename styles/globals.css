@@ -45,14 +45,11 @@ main {
   border: 1px solid #50575e17;
   outline: none;
   border-radius: 4px;
-}
-
-.actionBtn__dark {
-  color: lightgray;
+  border: 2px solid #e2e2e2;
 }
 
 .formInput:focus {
-  border: 2px solid #3b82f6;
+  border-color: #3b82f6;
 }
 
 .loginPage,
