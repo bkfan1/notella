@@ -3,31 +3,43 @@ import Account from "../../../models/account";
 import { email } from "../../../../utils/regex";
 
 export const changeAccountEmail = async (req, res, userId) => {
+  if (!userId) {
+    return await res.status(400).json({ error: "" });
+  }
+
   const { body } = req;
 
-  if (!body.newEmail || !body.confirmNewEmail) {
-    return res.status(400).json({ message: "Invalid credentials." });
+  if (!body.newEmail) {
+    return await res.status(400).json({ message: "Email is required." });
+  }
+
+  if (!body.confirmNewEmail) {
+    return await res
+      .status(400)
+      .json({ message: "Confirm new email is required." });
   }
 
   if (body.newEmail !== body.confirmNewEmail) {
-    return res
+    return await res
       .status(400)
       .json({ message: "Confirm email dont match with new email." });
   }
 
   if (!email.test(body.newEmail)) {
-    return res.status(400).json({ message: "Invalid new email." });
+    return await res.status(400).json({ message: "Invalid new email." });
   }
 
   if (!email.test(body.confirmNewEmail)) {
-    return res.status(400).json({ message: "Invalid confirm new email." });
+    return await res
+      .status(400)
+      .json({ message: "Invalid confirm new email." });
   }
 
   const db = await connection();
   const accountWithEmail = await Account.findOne({ email: body.newEmail });
 
   if (accountWithEmail) {
-    return res
+    return await res
       .status(400)
       .json({ message: "Already exists an account with that email." });
   }
