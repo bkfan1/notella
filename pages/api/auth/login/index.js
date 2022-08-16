@@ -1,4 +1,4 @@
-import { handleLogin } from "../../../database/middleware/authentication/login/index";
+import { handleLogin } from "../../../../database/middleware/authentication/login/index";
 
 export default async function handler(req, res) {
   switch (req.method) {

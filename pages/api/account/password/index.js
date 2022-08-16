@@ -1,5 +1,5 @@
-import { verifyToken } from "../../../database/middleware/authentication/token";
-import { changeAccountPassword } from "../../../database/middleware/account";
+import { verifyToken } from "../../../../database/middleware/authentication/token";
+import { changeAccountPassword } from "../../../../database/middleware/account/password";
 
 export default async function handler(req, res) {
   switch (req.method) {
