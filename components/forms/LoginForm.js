@@ -2,14 +2,12 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { ResponseContext } from "../../context/ResponseContext";
-import { LayoutContext } from "../../context/LayoutContext";
 
-import Link from "next/link";
 import axios from "axios";
 import { email } from "../../utils/regex";
 import ErrorFormFieldMessage from "../ErrorFormFieldMessage";
 
-export default function LoginForm() {
+export default function LoginForm({}) {
   const {
     register,
     handleSubmit,
@@ -19,11 +17,10 @@ export default function LoginForm() {
   const { setCode, setMessage, extractCode, extractMessage } =
     useContext(ResponseContext);
 
-  const { darkMode } = useContext(LayoutContext);
-
   const router = useRouter();
 
   const onSubmit = async (data) => {
+    console.log(data)
     try {
       const res = await axios.post("/api/auth/login", data);
 
@@ -42,11 +39,12 @@ export default function LoginForm() {
       setMessage(message);
     }
   };
+
   return (
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col w-72 ease-in-out duration-100 p-4 gap-4"
+        className="relative flex flex-col w-72 ease-in-out duration-100 p-4 gap-4"
       >
         <div className="flex flex-col gap-2">
           <label className="flex flex-col">
@@ -86,13 +84,6 @@ export default function LoginForm() {
           <button className="bg-blue-500 py-2 text-white hover:opacity-90">
             Log In
           </button>
-          <Link href="/register">
-            <a
-              className={`text-sm ${darkMode ? "text-white" : "text-sky-700"}`}
-            >
-              Create account
-            </a>
-          </Link>
         </menu>
       </form>
     </>

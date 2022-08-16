@@ -1,9 +1,7 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { ResponseContext } from "../../context/ResponseContext";
-import { LayoutContext } from "../../context/LayoutContext";
 
-import Link from "next/link";
 import axios from "axios";
 import { email } from "../../utils/regex";
 import ErrorFormFieldMessage from "../ErrorFormFieldMessage";
@@ -18,16 +16,18 @@ export default function RegisterForm() {
   const { setCode, setMessage, extractCode, extractMessage } =
     useContext(ResponseContext);
 
-  const { darkMode } = useContext(LayoutContext);
-
   const onSubmit = async (data) => {
+    console.log(data)
     try {
       const res = await axios.post("/api/register", data);
 
       setCode(res.status);
       setMessage(res.data.message);
+
     } catch (error) {
+
       const { response } = error;
+
       const status = extractCode(response);
       const message = extractMessage(response);
 
@@ -80,13 +80,6 @@ export default function RegisterForm() {
           <button className="bg-blue-500 py-2 text-white hover:opacity-90">
             Register
           </button>
-          <Link href="/login">
-            <a
-              className={`text-sm ${darkMode ? "text-white" : "text-sky-700"}`}
-            >
-              Log In
-            </a>
-          </Link>
         </menu>
       </form>
     </>
