@@ -46,6 +46,7 @@ export default function NotePreviewer() {
                   <button
                     onClick={() => setPanelIsActive(!panelIsActive)}
                     className={`${btnTheme}`}
+                    title="Toggle panel"
                   >
                     <i className="bi bi-list text-2xl" />
                   </button>
