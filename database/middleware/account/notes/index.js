@@ -70,7 +70,7 @@ export const downloadAccountNotes = async (req, res, userId) => {
     const zipDir = `./temp/user_${userId}_notes.zip`;
     zip.writeZip(zipDir);
 
-    const pth = await path.resolve(".", `temp/user_${userId}_notes.zip`);
+    const pth = await path.resolve(process.cwd(), `temp/user_${userId}_notes.zip`);
     const file = await fs.readFile(pth);
 
     res.setHeader("Content-Type", "application/zip");
@@ -80,6 +80,6 @@ export const downloadAccountNotes = async (req, res, userId) => {
     await fs.rm(`./temp/user_${userId}_notes.zip`, { recursive: true });
     return;
   } catch (error) {
-    return res.status(400).json({some:"error"});
+    return res.status(400).json({ some: "error" });
   }
 };
