@@ -21,7 +21,7 @@ export default function NotePreviewer() {
 
   const [viewAsMarkdown, setViewAsMarkdown] = useState(true);
 
-  const btnTheme = darkMode ? "actionBtn__dark" : "";
+  const btnTheme = `${darkMode ? "text-gray-300" : ""} text-2xl`;
 
   return (
     <>
@@ -48,7 +48,7 @@ export default function NotePreviewer() {
                     className={`${btnTheme}`}
                     title="Toggle panel"
                   >
-                    <i className="bi bi-list text-2xl" />
+                    <i className="bi bi-list" />
                   </button>
                 ) : (
                   ""
@@ -62,7 +62,7 @@ export default function NotePreviewer() {
                     darkMode ? "text-white" : ""
                   }`}
                   style={{ background: "none" }}
-                  disabled={viewTrashedNotes ? true : false}
+                  disabled={viewTrashedNotes || viewAsMarkdown ? true : false}
                   value={currentEditingNote.title}
                   onChange={(e) =>
                     handleOnChangeCurrentEditingNote(e, currentEditingNote.id)
@@ -76,7 +76,7 @@ export default function NotePreviewer() {
                     className={`${btnTheme}`}
                     title="Send to trash"
                   >
-                    <i className={`bi bi-trash text-2xl`} />
+                    <i className={`bi bi-trash`} />
                   </button>
                 ) : (
                   <>
@@ -95,7 +95,7 @@ export default function NotePreviewer() {
                       className={`${btnTheme}`}
                       title={"Delete permanently"}
                     >
-                      <i className="bi bi-x-circle-fill text-2xl" />
+                      <i className="bi bi-x-circle-fill" />
                     </button>
                   </>
                 )}

@@ -8,7 +8,7 @@ export default function ResponseStatusBox({ code, message }) {
             : code >= 400
             ? "bg-red-500"
             : "bg-yellow-400"
-        }`}
+        } rounded`}
       >
         
         <p className="text-sm text-center text-white">{message}</p>

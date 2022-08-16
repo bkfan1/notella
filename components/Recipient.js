@@ -30,13 +30,19 @@ export default function Recipient() {
             className={`mt-1 px-2 border ${
               darkMode ? "border-gray-700 text-white" : "border-gray-300"
             } rounded`}
-            style={{ background: "none" }}
+            style={{ background: "none", outline: "none" }}
           />
         </header>
 
-        {filteredNotes.length === 0 ? <p className="pt-4 text-center text-gray-500">{viewTrashedNotes ? 'No trashed notes found.' : 'No notes found.'}</p> : filteredNotes.map((note) => (
-          <NoteInRecipient key={note.id} id={note.id} title={note.title} />
-        ))}
+        {filteredNotes.length === 0 ? (
+          <p className="pt-4 text-center text-gray-500">
+            {viewTrashedNotes ? "No trashed notes found." : "No notes found."}
+          </p>
+        ) : (
+          filteredNotes.map((note) => (
+            <NoteInRecipient key={note.id} id={note.id} title={note.title} />
+          ))
+        )}
       </aside>
     </>
   );

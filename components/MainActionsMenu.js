@@ -22,7 +22,7 @@ export default function MainActionsMenu() {
 
   const router = useRouter();
 
-  const btnTheme = darkMode ? "actionBtn__dark" : "";
+  const btnTheme = `${darkMode ? "text-gray-300" : ""} text-2xl hover:opacity-80`;
 
   const logout = async () => {
     try {
@@ -33,13 +33,15 @@ export default function MainActionsMenu() {
     }
   };
 
-  const downloadNotes = async () => {
+  {
+    /*const downloadNotes = async () => {
     try {
       const res = await axios.get("/api/download/account/notes");
     } catch (error) {
       console.log(error);
     }
-  };
+  };*/
+  }
 
   return (
     <>
@@ -49,7 +51,7 @@ export default function MainActionsMenu() {
         }`}
       >
         <button onClick={logout} className={`${btnTheme}`} title={"Log out"}>
-          <i className="bi bi-box-arrow-left text-2xl" />
+          <i className="bi bi-box-arrow-left" />
         </button>
 
         {viewTrashedNotes ? (
@@ -60,18 +62,18 @@ export default function MainActionsMenu() {
             className={`${btnTheme}`}
             title={"Add new note"}
           >
-            <i className="bi bi-journal-plus text-2xl" />
+            <i className="bi bi-journal-plus" />
           </button>
         )}
 
-        <Link download href="/api/download/account/notes">
+        {/*<Link download href="/api/download/account/notes">
           <a
             className={`${btnTheme}`}
             title={"Export notes (download as ZIP)"}
           >
             <i className={`bi bi-folder-symlink text-2xl`} />
           </a>
-        </Link>
+        </Link>*/}
 
         <button
           onClick={() => setViewTrashedNotes(!viewTrashedNotes)}
@@ -90,9 +92,7 @@ export default function MainActionsMenu() {
           className={`${btnTheme}`}
           title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
         >
-          <i
-            className={`${darkMode ? "bi bi-sun-fill" : "bi bi-moon"} text-2xl`}
-          />
+          <i className={`${darkMode ? "bi bi-sun-fill" : "bi bi-moon"}`} />
         </button>
 
         <button
@@ -100,7 +100,7 @@ export default function MainActionsMenu() {
           className={`${btnTheme}`}
           title={"Settings"}
         >
-          <i className="bi bi-gear text-2xl" />
+          <i className="bi bi-gear" />
         </button>
 
         {windowWidth < 1024 && currentEditingNote ? (
@@ -109,7 +109,7 @@ export default function MainActionsMenu() {
             className={`${btnTheme}`}
             title="Toggle Panel"
           >
-            <i className="bi bi-list text-2xl" />
+            <i className="bi bi-list" />
           </button>
         ) : (
           ""
