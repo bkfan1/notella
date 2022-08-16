@@ -64,13 +64,13 @@ export default function MainActionsMenu() {
           </button>
         )}
 
-        <Link href="/api/download/account/notes">
-          <button
+        <Link href="/api/download/account/notes" passHref>
+          <a
             className={`${btnTheme}`}
             title={"Export notes (download as ZIP)"}
           >
             <i className={`bi bi-folder-symlink text-2xl`} />
-          </button>
+          </a>
         </Link>
 
         <button
