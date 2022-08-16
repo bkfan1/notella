@@ -3,6 +3,7 @@ import { NotesContext } from "../context/NotesContext";
 import { LayoutContext } from "../context/LayoutContext";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Link from "next/link";
 
 export default function MainActionsMenu() {
   const {
@@ -32,6 +33,14 @@ export default function MainActionsMenu() {
     }
   };
 
+  const downloadNotes = async () => {
+    try {
+      const res = await axios.get("/api/download/account/notes");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <menu
@@ -54,6 +63,15 @@ export default function MainActionsMenu() {
             <i className="bi bi-journal-plus text-2xl" />
           </button>
         )}
+
+        <Link href="/api/download/account/notes">
+          <button
+            className={`${btnTheme}`}
+            title={"Export notes (download as ZIP)"}
+          >
+            <i className={`bi bi-folder-symlink text-2xl`} />
+          </button>
+        </Link>
 
         <button
           onClick={() => setViewTrashedNotes(!viewTrashedNotes)}
