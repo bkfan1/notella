@@ -64,7 +64,7 @@ export default function MainActionsMenu() {
           </button>
         )}
 
-        <Link href="/api/download/account/notes" passHref>
+        <Link download href="/api/download/account/notes">
           <a
             className={`${btnTheme}`}
             title={"Export notes (download as ZIP)"}
