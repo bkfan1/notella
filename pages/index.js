@@ -43,7 +43,7 @@ export async function getServerSideProps(ctx) {
   const { userId } = payload;
   const db = await connection();
   const user = await Account.findOne({ _id: userId });
-  //console.log(user);
+
   if (!user) {
     return {
       redirect: {

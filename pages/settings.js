@@ -14,7 +14,7 @@ import UpdateAccountEmailForm from "../components/forms/UpdateAccountEmailForm";
 import ResponseStatusBox from "../components/ResponseStatusBox";
 
 export default function SettingsPage({}) {
-  const {code, message} = useContext(ResponseContext);
+  const { code, message } = useContext(ResponseContext);
   const router = useRouter();
   const { darkMode } = useContext(LayoutContext);
   const [section, setSection] = useState("email");
@@ -33,7 +33,7 @@ export default function SettingsPage({}) {
           darkMode ? "bg-gray-800" : "bg-white"
         }`}
       >
-        <div className="flex flex-col h-fit-content p-4 rounded">
+        <section className="flex flex-col h-fit-content p-4 rounded">
           <header
             className={`flex gap-4 justify-center items-center mb-2 ${
               darkMode ? "text-white" : ""
@@ -69,9 +69,13 @@ export default function SettingsPage({}) {
           ) : (
             <UpdateAccountPasswordForm />
           )}
-        </div>
+        </section>
 
-        {code && message ? <ResponseStatusBox code={code} message={message}/> : ''}
+        {code && message ? (
+          <ResponseStatusBox code={code} message={message} />
+        ) : (
+          ""
+        )}
 
         <Link href="/">
           <a
