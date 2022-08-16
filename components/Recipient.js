@@ -34,7 +34,7 @@ export default function Recipient() {
           />
         </header>
 
-        {filteredNotes.length === 0 ? <p className="pt-4 text-center text-gray-500">{viewTrashedNotes ? 'No trashed notes found.' : 'No notes found. Add start by adding a new note using the button in the main actions menu.'}</p> : filteredNotes.map((note) => (
+        {filteredNotes.length === 0 ? <p className="pt-4 text-center text-gray-500">{viewTrashedNotes ? 'No trashed notes found.' : 'No notes found.'}</p> : filteredNotes.map((note) => (
           <NoteInRecipient key={note.id} id={note.id} title={note.title} />
         ))}
       </aside>
