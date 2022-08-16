@@ -80,6 +80,6 @@ export const downloadAccountNotes = async (req, res, userId) => {
     await fs.rm(`./temp/user_${userId}_notes.zip`, { recursive: true });
     return;
   } catch (error) {
-    return res.status(400).json({});
+    return res.status(400).json({some:"error"});
   }
 };
