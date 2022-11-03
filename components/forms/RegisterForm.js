@@ -17,7 +17,6 @@ export default function RegisterForm() {
     useContext(ResponseContext);
 
   const onSubmit = async (data) => {
-    console.log(data)
     try {
       const res = await axios.post("/api/register", data);
 
