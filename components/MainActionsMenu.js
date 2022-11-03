@@ -14,6 +14,7 @@ export default function MainActionsMenu() {
   } = useContext(NotesContext);
   const {
     darkMode,
+    setDarkMode,
     panelIsActive,
     setPanelIsActive,
     windowWidth,
@@ -29,7 +30,8 @@ export default function MainActionsMenu() {
   const logout = async () => {
     try {
       const res = await axios.delete("/api/auth/logout");
-      localStorage.clear(); // to remove the theme preference chosed by the last user
+      localStorage.clear(); // to remove the theme preference chosed by the last user;
+      setDarkMode(false);
       router.push("/login");
     } catch (error) {
       console.log(error);
