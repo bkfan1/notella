@@ -16,7 +16,7 @@ export const handleLogin = async (req, res) => {
   if (!body.password) {
     return await res
       .status(400)
-      .json({ message: "You need to provide an email." });
+      .json({ message: "You need to provide a password." });
   }
 
   if (!email.test(body.email)) {
@@ -58,8 +58,8 @@ export const handleLogin = async (req, res) => {
 
     const cookie = serialize("authToken", jwt, {
       httpOnly: true,
-      secure: process.env.NODE_ENV !== "development",
-      sameSite: process.env.NODE_ENV === "development" ? "strict" : "lax",
+      secure: true,
+      sameSite: "strict",
       maxAge: 86400,
       path: "/",
     });
