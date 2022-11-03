@@ -22,7 +22,9 @@ export default function MainActionsMenu() {
 
   const router = useRouter();
 
-  const btnTheme = `${darkMode ? "text-gray-300" : ""} text-2xl hover:opacity-80`;
+  const btnTheme = `${
+    darkMode ? "text-gray-300" : ""
+  } text-2xl hover:opacity-80`;
 
   const logout = async () => {
     try {
@@ -32,16 +34,6 @@ export default function MainActionsMenu() {
       console.log(error);
     }
   };
-
-  {
-    /*const downloadNotes = async () => {
-    try {
-      const res = await axios.get("/api/download/account/notes");
-    } catch (error) {
-      console.log(error);
-    }
-  };*/
-  }
 
   return (
     <>
@@ -54,26 +46,13 @@ export default function MainActionsMenu() {
           <i className="bi bi-box-arrow-left" />
         </button>
 
-        {viewTrashedNotes ? (
-          ""
-        ) : (
-          <button
-            onClick={addNewNote}
-            className={`${btnTheme}`}
-            title={"Add new note"}
-          >
-            <i className="bi bi-journal-plus" />
-          </button>
-        )}
-
-        {/*<Link download href="/api/download/account/notes">
-          <a
-            className={`${btnTheme}`}
-            title={"Export notes (download as ZIP)"}
-          >
-            <i className={`bi bi-folder-symlink text-2xl`} />
-          </a>
-        </Link>*/}
+        <button
+          onClick={addNewNote}
+          className={`${btnTheme}`}
+          title={"Add new note"}
+        >
+          <i className="bi bi-journal-plus" />
+        </button>
 
         <button
           onClick={() => setViewTrashedNotes(!viewTrashedNotes)}
