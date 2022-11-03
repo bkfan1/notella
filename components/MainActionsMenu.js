@@ -29,6 +29,7 @@ export default function MainActionsMenu() {
   const logout = async () => {
     try {
       const res = await axios.delete("/api/auth/logout");
+      localStorage.clear(); // to remove the theme preference chosed by the last user
       router.push("/login");
     } catch (error) {
       console.log(error);
