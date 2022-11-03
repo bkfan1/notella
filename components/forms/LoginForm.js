@@ -20,7 +20,6 @@ export default function LoginForm({}) {
   const router = useRouter();
 
   const onSubmit = async (data) => {
-    console.log(data)
     try {
       const res = await axios.post("/api/auth/login", data);
 
